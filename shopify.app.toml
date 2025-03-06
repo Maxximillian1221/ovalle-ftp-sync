@@ -1,7 +1,7 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-client_id = "aa8bfd5a365938a1f27722453a6846ed"
-application_url = "https://example.com/"
+client_id = "c6e424e4a98793c0680424d7d146806b"
+application_url = "https://ovalle-ftp-sync.vercel.app/"
 embedded = true
 name = "ovalle-ftp-sync"
 handle = "ovalle-ftp-sync"
@@ -29,7 +29,7 @@ api_version = "2025-01"
 scopes = "write_products,write_orders,read_inventory"
 
 [auth]
-redirect_urls = [ "https://example.com/api/auth" ]
+redirect_urls = [ "https://ovalle-ftp-sync.vercel.app/auth/callback" ]
 
 [pos]
 embedded = false
