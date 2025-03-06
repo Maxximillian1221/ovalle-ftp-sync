@@ -16,7 +16,7 @@ import {
 import { TitleBar } from "@shopify/app-bridge-react";
 import { authenticate } from "../shopify.server";
 import { prisma } from "../db.server";
-import { ExchangeMajor, InventoryMajor, SettingsMajor } from "@shopify/polaris-icons";
+// Remove the polaris-icons import as it's causing build errors
 
 export const loader = async ({ request }) => {
   const { session } = await authenticate.admin(request);
@@ -113,7 +113,7 @@ export default function Index() {
                         minWidth="200px"
                       >
                         <BlockStack gap="200" align="center">
-                          <Icon source={ExchangeMajor} color="base" />
+                          <Icon source="OrdersMajor" color="base" />
                           <Text as="h4" variant="headingSm">
                             Orders
                           </Text>
@@ -141,7 +141,7 @@ export default function Index() {
                         minWidth="200px"
                       >
                         <BlockStack gap="200" align="center">
-                          <Icon source={InventoryMajor} color="base" />
+                          <Icon source="ProductsMajor" color="base" />
                           <Text as="h4" variant="headingSm">
                             Inventory
                           </Text>
