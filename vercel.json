@@ -3,8 +3,5 @@
   "outputDirectory": "public",
   "devCommand": "npm run dev",
   "installCommand": "npm install",
-  "framework": "remix",
-  "environment": {
-    "NODE_ENV": "production"
-  }
+  "framework": "remix"
 }
