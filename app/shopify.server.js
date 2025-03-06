@@ -3,8 +3,8 @@ import {
   ApiVersion,
   AppDistribution,
   shopifyApp,
-  MemorySessionStorage,
 } from "@shopify/shopify-app-remix/server";
+import { MemorySessionStorage } from "@shopify/shopify-app-session-storage-memory";
 
 // Use memory session storage instead of Prisma
 // Note: This is not suitable for production with multiple instances
