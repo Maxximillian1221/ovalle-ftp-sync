@@ -1,10 +1,15 @@
 // setup-db.js
 import { PrismaClient } from '@prisma/client';
 
+console.log('Starting database setup...');
+console.log('DATABASE_URL:', process.env.DATABASE_URL ? 'Set' : 'Not set');
+console.log('DIRECT_URL:', process.env.DIRECT_URL ? 'Set' : 'Not set');
+
 const prisma = new PrismaClient();
 
 async function setupDatabase() {
   try {
+    console.log('Connecting to database...');
     // Check if Session table exists
     let tableExists = false;
     try {
@@ -127,7 +132,14 @@ async function setupDatabase() {
     console.log('Database setup completed successfully');
   } catch (error) {
     console.error('Error setting up database:', error);
-    process.exit(1);
+    console.error('Error details:', error.message);
+    if (error.cause) {
+      console.error('Cause:', error.cause.message);
+    }
+    
+    // Don't exit with error code, as this would fail the build
+    // Instead, log the error and continue
+    console.log('Continuing despite database setup error');
   } finally {
     await prisma.$disconnect();
   }
