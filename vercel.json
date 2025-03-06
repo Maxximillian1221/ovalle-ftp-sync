@@ -1,7 +1,10 @@
 {
-  "buildCommand": "npx prisma generate && node setup-db.js && npm run build",
+  "buildCommand": "npx prisma generate && node setup-db.js && node test-db-connection.js && npm run build",
   "outputDirectory": "public",
   "devCommand": "npm run dev",
   "installCommand": "npm install",
-  "framework": "remix"
+  "framework": "remix",
+  "env": {
+    "NODE_ENV": "production"
+  }
 }
