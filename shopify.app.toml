@@ -4,7 +4,7 @@ client_id = "c6e424e4a98793c0680424d7d146806b"
 application_url = "https://ovalle-ftp-sync.vercel.app/"
 embedded = true
 name = "ovalle-ftp-sync"
-handle = "ovalle-ftp-sync"
+handle = "ftp-order-sync-ovalle"
 
 [build]
 include_config_on_deploy = true
