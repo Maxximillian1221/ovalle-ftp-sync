@@ -15,7 +15,7 @@ import {
   InlineStack,
 } from "@shopify/polaris";
 import { authenticate } from "../../shopify.server";
-import { prisma } from "../../db.server";
+import prisma from "../../db.server";
 import { processInventoryFiles } from "../../utils/ftp.server";
 import { updateShopifyInventory } from "../../services/inventory.server";
 

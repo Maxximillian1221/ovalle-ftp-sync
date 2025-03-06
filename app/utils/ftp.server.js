@@ -1,6 +1,6 @@
 import * as ftp from 'basic-ftp';
 import * as xml2js from 'xml2js';
-import { prisma } from '../db.server';
+import prisma from '../db.server';
 
 /**
  * Connect to FTP server using stored credentials

@@ -1,4 +1,4 @@
-import { prisma } from '../db.server';
+import prisma from '../db.server';
 
 /**
  * Update inventory in Shopify based on processed inventory data

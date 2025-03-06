@@ -15,7 +15,7 @@ import {
   InlineStack,
 } from "@shopify/polaris";
 import { authenticate } from "../../shopify.server";
-import { prisma } from "../../db.server";
+import prisma from "../../db.server";
 import { processOrder, getOrderSyncStatus } from "../../services/orders.server";
 
 export const loader = async ({ request }) => {
