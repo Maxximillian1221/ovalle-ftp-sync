@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>FTP Sync Debug</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+    h1 { color: #333; }
+    pre { background-color: #f5f5f5; padding: 10px; border-radius: 5px; }
+    .card { border: 1px solid #ddd; border-radius: 5px; padding: 15px; margin-bottom: 15px; }
+  </style>
+</head>
+<body>
+  <h1>FTP Sync Debug Page</h1>
+  
+  <div class="card">
+    <h2>Current URL</h2>
+    <pre id="current-url"></pre>
+  </div>
+  
+  <div class="card">
+    <h2>Environment Variables</h2>
+    <pre id="env-vars">Loading...</pre>
+  </div>
+  
+  <div class="card">
+    <h2>App Status</h2>
+    <pre id="app-status">Loading...</pre>
+  </div>
+  
+  <script>
+    // Display current URL
+    document.getElementById('current-url').textContent = window.location.href;
+    
+    // Fetch environment variables
+    fetch('/api/health')
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('env-vars').textContent = JSON.stringify(data, null, 2);
+      })
+      .catch(error => {
+        document.getElementById('env-vars').textContent = 'Error fetching environment variables: ' + error.message;
+      });
+    
+    // Check app status
+    fetch('/app')
+      .then(response => {
+        document.getElementById('app-status').textContent = 'App endpoint responded with status: ' + response.status;
+      })
+      .catch(error => {
+        document.getElementById('app-status').textContent = 'Error accessing app endpoint: ' + error.message;
+      });
+  </script>
+</body>
+</html>
