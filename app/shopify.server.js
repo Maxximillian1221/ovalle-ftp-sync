@@ -20,7 +20,7 @@ const shopify = shopifyApp({
   sessionStorage: prismaSessionStorage,
   distribution: AppDistribution.AppStore,
   future: {
-    unstable_newEmbeddedAuthStrategy: true,
+    unstable_newEmbeddedAuthStrategy: false,
     removeRest: true,
   },
   ...(process.env.SHOP_CUSTOM_DOMAIN
