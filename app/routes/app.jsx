@@ -25,12 +25,13 @@ export default function App() {
   // Check for URL mismatch and handle it
   useEffect(() => {
     const currentUrl = window.location.href;
-    // If we detect we're on the old URL, redirect to the new one
-    if (currentUrl.includes('ovalle-ftp-sync-r6x88e9uj-iulians-projects-3e3f2a9b.vercel.app')) {
+    // If we detect we're on an old URL, redirect to the new one
+    if (currentUrl.includes('ovalle-ftp-sync-r6x88e9uj-iulians-projects-3e3f2a9b.vercel.app') ||
+        currentUrl.includes('ovalle-ftp-sync-34zf9i0ki-iulians-projects-3e3f2a9b.vercel.app')) {
       console.log("Detected old URL, redirecting to new URL");
       window.location.href = currentUrl.replace(
-        'ovalle-ftp-sync-r6x88e9uj-iulians-projects-3e3f2a9b.vercel.app',
-        'ovalle-ftp-sync-34zf9i0ki-iulians-projects-3e3f2a9b.vercel.app'
+        /ovalle-ftp-sync-(r6x88e9uj|34zf9i0ki)-iulians-projects-3e3f2a9b\.vercel\.app/,
+        'ovalle-ftp-sync-iulians-projects-3e3f2a9b.vercel.app'
       );
       return;
     }
