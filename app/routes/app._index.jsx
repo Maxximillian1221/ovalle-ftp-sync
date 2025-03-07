@@ -19,59 +19,102 @@ import prisma from "../db.server";
 // Remove the polaris-icons import as it's causing build errors
 
 export const loader = async ({ request }) => {
-  const { session } = await authenticate.admin(request);
-  
-  // Check if FTP is configured
-  const ftpConfig = await prisma.ftpConfig.findUnique({
-    where: { shop: session.shop },
-  });
-  
-  // Get order sync stats
-  const orderSyncStats = await prisma.orderSync.groupBy({
-    by: ['syncStatus'],
-    _count: {
-      id: true
-    },
-    where: {
-      shop: session.shop
+  try {
+    console.log("app._index.jsx loader starting");
+    const { session } = await authenticate.admin(request);
+    console.log("Authentication successful, shop:", session.shop);
+    
+    // Default stats in case of error
+    const defaultStats = {
+      ftpConfigured: false,
+      orders: { total: 0, success: 0, failed: 0 },
+      inventory: { total: 0, success: 0, failed: 0 }
+    };
+    
+    try {
+      // Check if FTP is configured
+      console.log("Checking FTP config");
+      const ftpConfig = await prisma.ftpConfig.findUnique({
+        where: { shop: session.shop },
+      });
+      console.log("FTP config:", ftpConfig ? "Found" : "Not found");
+      
+      // Get order sync stats
+      console.log("Getting order sync stats");
+      const orderSyncStats = await prisma.orderSync.groupBy({
+        by: ['syncStatus'],
+        _count: {
+          id: true
+        },
+        where: {
+          shop: session.shop
+        }
+      });
+      console.log("Order sync stats:", orderSyncStats);
+      
+      // Get inventory sync stats
+      console.log("Getting inventory sync stats");
+      const inventorySyncStats = await prisma.inventorySync.groupBy({
+        by: ['syncStatus'],
+        _count: {
+          id: true
+        },
+        where: {
+          shop: session.shop
+        }
+      });
+      console.log("Inventory sync stats:", inventorySyncStats);
+      
+      // Format stats
+      const stats = {
+        ftpConfigured: !!ftpConfig,
+        orders: {
+          total: orderSyncStats.reduce((sum, stat) => sum + stat._count.id, 0),
+          success: orderSyncStats.find(stat => stat.syncStatus === 'success')?._count.id || 0,
+          failed: orderSyncStats.find(stat => stat.syncStatus === 'failed')?._count.id || 0
+        },
+        inventory: {
+          total: inventorySyncStats.reduce((sum, stat) => sum + stat._count.id, 0),
+          success: inventorySyncStats.find(stat => stat.syncStatus === 'success')?._count.id || 0,
+          failed: inventorySyncStats.find(stat => stat.syncStatus === 'failed')?._count.id || 0
+        }
+      };
+      
+      console.log("Stats formatted:", stats);
+      return json({ stats });
+    } catch (error) {
+      console.error("Error in database queries:", error);
+      return json({ stats: defaultStats, error: error.message });
     }
-  });
-  
-  // Get inventory sync stats
-  const inventorySyncStats = await prisma.inventorySync.groupBy({
-    by: ['syncStatus'],
-    _count: {
-      id: true
-    },
-    where: {
-      shop: session.shop
-    }
-  });
-  
-  // Format stats
-  const stats = {
-    ftpConfigured: !!ftpConfig,
-    orders: {
-      total: orderSyncStats.reduce((sum, stat) => sum + stat._count.id, 0),
-      success: orderSyncStats.find(stat => stat.syncStatus === 'success')?._count.id || 0,
-      failed: orderSyncStats.find(stat => stat.syncStatus === 'failed')?._count.id || 0
-    },
-    inventory: {
-      total: inventorySyncStats.reduce((sum, stat) => sum + stat._count.id, 0),
-      success: inventorySyncStats.find(stat => stat.syncStatus === 'success')?._count.id || 0,
-      failed: inventorySyncStats.find(stat => stat.syncStatus === 'failed')?._count.id || 0
-    }
-  };
-  
-  return json({ stats });
+  } catch (error) {
+    console.error("Error in loader:", error);
+    throw error;
+  }
 };
 
 export default function Index() {
-  const { stats } = useLoaderData();
+  const { stats, error } = useLoaderData();
+  
+  console.log("Index component rendering with stats:", stats);
+  if (error) {
+    console.error("Error from loader:", error);
+  }
   
   return (
     <Page>
       <TitleBar title="FTP Sync" />
+      {error && (
+        <Card>
+          <BlockStack gap="200">
+            <Text as="h2" variant="headingMd" tone="critical">
+              Error Loading Data
+            </Text>
+            <Text variant="bodyMd" as="p" tone="critical">
+              {error}
+            </Text>
+          </BlockStack>
+        </Card>
+      )}
       <BlockStack gap="500">
         <Layout>
           <Layout.Section>
