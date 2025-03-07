@@ -16,6 +16,10 @@ export const loader = async ({ request }) => {
 export default function App() {
   const { apiKey } = useLoaderData();
 
+  // Add console logs for debugging
+  console.log("App component rendering");
+  console.log("API Key:", apiKey);
+
   return (
     <AppProvider isEmbeddedApp apiKey={apiKey}>
       <NavMenu>
@@ -26,7 +30,11 @@ export default function App() {
         <Link to="/app/orders">Orders</Link>
         <Link to="/app/inventory">Inventory</Link>
       </NavMenu>
-      <Outlet />
+      <div style={{ padding: '20px' }}>
+        <h1>FTP Sync App</h1>
+        <p>If you can see this text, the app is loading but the Outlet content might be failing.</p>
+        <Outlet />
+      </div>
     </AppProvider>
   );
 }
