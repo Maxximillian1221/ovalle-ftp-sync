@@ -5,6 +5,7 @@
   "installCommand": "npm install",
   "framework": "remix",
   "env": {
-    "NODE_ENV": "production"
+    "NODE_ENV": "production",
+    "SHOPIFY_APP_URL": "https://ovalle-ftp-sync-r6x88e9uj-iulians-projects-3e3f2a9b.vercel.app"
   }
 }
